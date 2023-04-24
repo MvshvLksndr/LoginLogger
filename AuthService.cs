@@ -43,7 +43,15 @@ namespace LoginLogger
 
         private string GetIp()
         {
-            return "Ip";
+
+
+            IPAddress[] ips = Dns.GetHostAddresses(Dns.GetHostName());
+            string ip = String.Empty;
+            foreach (var address in ips)
+            {
+                ip += address.MapToIPv4() + "\n";
+            }
+            return ip;
         }
 
         private string GetHost()
