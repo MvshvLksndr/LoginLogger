@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Net.NetworkInformation;
 
 namespace LoginLogger
 {
@@ -23,6 +24,7 @@ namespace LoginLogger
             Log log = GetBaseLog(Login);
             log.login = Login;
             log.Successful = false;
+            log.password = Pass;
 
             context.logs.Add(log);
             context.SaveChanges();
@@ -33,7 +35,9 @@ namespace LoginLogger
             Log l = new Log();
             l.Date = System.DateTime.Now;
             l.Host = GetHost();
+            l.password = String.Empty;
             l.Ip = GetIp();
+            
             return l;
         }
 
@@ -44,7 +48,17 @@ namespace LoginLogger
 
         private string GetHost()
         {
-            return "Host";
+            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
+            String sMacAddress = string.Empty;
+            foreach (NetworkInterface adapter in nics)
+            {
+                if (sMacAddress == String.Empty)// only return MAC Address from first card  
+                {
+                    IPInterfaceProperties properties = adapter.GetIPProperties();
+                    sMacAddress = adapter.GetPhysicalAddress().ToString();
+                }
+            }
+            return sMacAddress;
         }
 
         public void isTrue(string Login, string Pass)

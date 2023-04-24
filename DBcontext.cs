@@ -6,10 +6,16 @@ namespace LoginLogger
 {
     internal class DBcontext : DbContext
     {
-        public DbSet<Log> logs { get; set; }
-
         
+        string cs = "FileName = logs.db";
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite(cs);
+        }
+        public DbSet<Log> logs { get; set; }
     }
+
+    
 
     public class Log
     {

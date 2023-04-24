@@ -32,13 +32,15 @@ namespace LoginLogger
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            if (AuthService.isValid(tbLogin.Text, tbPass.Text))
+            Logger logger = new Logger();
+            if (AuthService.isValid(tbLogin.Text, tbPass.Text) == true)
             {
-                
+                logger.isTrue(tbLogin.Text, tbPass.Text);
             }
             else
             {
                 MessageBox.Show("Пользователь не найден");
+                logger.isFalse (tbLogin.Text, tbPass.Text);
             }
         }
     }
